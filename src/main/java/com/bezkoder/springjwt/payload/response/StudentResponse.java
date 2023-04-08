@@ -1,8 +1,11 @@
 package com.bezkoder.springjwt.payload.response;
 
+import com.bezkoder.springjwt.models.GradeSubject;
+import com.bezkoder.springjwt.models.SubjectSkill;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.List;
 import java.util.Map;
 
 @Data
@@ -17,6 +20,7 @@ public class StudentResponse {
 
     Float skill_score;
     Float grade_point;
-    Map<String, Float> StudentSkill;
+    Map<String, Float> studentSkill;
+    List<SubjectResponse> gradeSubjects;
     Map<String, Float> grade;
 }

@@ -42,4 +42,10 @@ public class HackathonController {
         var subject = studentService.getListSubjectSkillById(id);
         return ResponseEntity.ok(subject);
     }
+
+    @GetMapping("/predict/{id}")
+    public ResponseEntity<String> predict(@PathVariable Long id) {
+        var subject = studentService.callAI(id.toString());
+        return ResponseEntity.ok(subject);
+    }
 }

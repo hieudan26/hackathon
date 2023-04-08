@@ -5,7 +5,9 @@ import com.bezkoder.springjwt.payload.response.StudentResponse;
 import com.bezkoder.springjwt.payload.response.SubjectResponse;
 import com.bezkoder.springjwt.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,6 +23,7 @@ public class StudentService {
 
     private final SubjectRepository subjectRepository;
     private final SubjectSkillRepository subjectSkillRepository;
+    private final RestTemplate restTemplate = new RestTemplate();
 
 
     public Student getStudentById(Long id) {
@@ -48,7 +51,8 @@ public class StudentService {
         skill_score/=mapSKill.size();
         grade_score/=mapSubjects.size();
 
-        return StudentResponse.builder().StudentSkill(mapSKill)
+        return StudentResponse.builder().studentSkill(mapSKill)
+                .gradeSubjects(subjects.stream().map((item)-> getListSubjectSkillById(item.getSubject().getId())).toList())
                 .grade(mapSubjects)
                 .name(student.getName())
                 .mssv(student.getStudent_id())
@@ -83,7 +87,7 @@ public class StudentService {
             }
             subjectResponses.add(SubjectResponse.builder()
                     .skills(mapSkills)
-                    .name(temp.get(0).getSubject().getName()).id(subject.getId()).build());
+                    .name(temp.get(0).getSubject().getName()).subjectSkillList(temp).id(subject.getId()).build());
         }
         return subjectResponses;
     }
@@ -104,9 +108,18 @@ public class StudentService {
         for(var a : temp) {
             mapSkills.put(a.getSkill().getName(), a.getScore());
         }
+        if(temp.isEmpty()) {
+            return SubjectResponse.builder()
+                    .skills(mapSkills)
+                    .name(null)
+                    .subjectSkillList(temp)
+                    .id(id).build();
+        }
         return SubjectResponse.builder()
                 .skills(mapSkills)
-                .name(temp.get(0).getSubject().getName()).id(temp.get(0).getId()).build();
+                .name(temp.get(0).getSubject().getName())
+                .subjectSkillList(temp)
+                .id(id).build();
 
     }
 
@@ -120,5 +133,14 @@ public class StudentService {
                 .skills(mapSkills)
                 .name(temp.get(0).getSubject().getName())
                 .id(temp.get(0).getId()).build();
+    }
+
+
+    public String callAI(String name) {
+        String fooResourceUrl
+                = "https://www.google.com/";
+        ResponseEntity<String> response
+                = restTemplate.getForEntity(fooResourceUrl, String.class);
+        return response.getBody();
     }
 }

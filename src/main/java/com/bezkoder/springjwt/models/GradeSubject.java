@@ -1,5 +1,6 @@
 package com.bezkoder.springjwt.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -16,6 +17,7 @@ public class GradeSubject {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "student_id", referencedColumnName = "id", nullable = false)
+    @JsonIgnore
     private Student student;
 
     @ManyToOne(fetch = FetchType.EAGER)

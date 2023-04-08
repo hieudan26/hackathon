@@ -2,6 +2,7 @@ package com.bezkoder.springjwt.models;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,7 @@ public class SubjectSkill {
 
     @ManyToOne
     @JoinColumn(name = "subject_id", referencedColumnName = "id")
+    @JsonIgnore
     private Subject subject;
 
     @ManyToOne

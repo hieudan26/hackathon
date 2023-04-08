@@ -1,8 +1,11 @@
 package com.bezkoder.springjwt.payload.response;
 
+import com.bezkoder.springjwt.models.SubjectSkill;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.List;
 import java.util.Map;
 
 @Data
@@ -12,4 +15,7 @@ public class SubjectResponse {
     String name;
 
     Map<String, Float> skills;
+    @JsonIgnore
+    List<SubjectSkill> subjectSkillList;
+
 }
