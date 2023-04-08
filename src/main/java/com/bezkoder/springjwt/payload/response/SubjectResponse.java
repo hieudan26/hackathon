@@ -11,5 +11,5 @@ public class SubjectResponse {
     Long id;
     String name;
 
-    Map<String, Long> skills;
+    Map<String, Float> skills;
 }

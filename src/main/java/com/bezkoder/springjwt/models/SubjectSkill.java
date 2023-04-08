@@ -26,6 +26,6 @@ public class SubjectSkill {
     private Skill skill;
 
     @Column(name = "score")
-    private Long Score;
+    private Float Score;
 
 }

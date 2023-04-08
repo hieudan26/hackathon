@@ -18,8 +18,8 @@ public class Student {
     private String name;
 
     @Column(nullable = false)
-    private String mssv;
+    private String student_id;
 
-    @Column(nullable = false)
-    private Long status;
+    private Float training_point;
+    private Float social_work_score;
 }

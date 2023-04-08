@@ -7,9 +7,9 @@ import lombok.Data;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "achievement")
+@Table(name = "student_skill")
 @Data
-public class Achivement {
+public class StudentSkill {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,5 +24,5 @@ public class Achivement {
     private Student student;
 
     @Column(nullable = false)
-    private Long score;
+    private Float score;
 }

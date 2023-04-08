@@ -15,7 +15,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class StudentService {
     private final StudentRepository studentRepository;
-    private final AchivementRepository achivementRepository;
+    private final StudentSkillRepository StudentSkillRepository;
     private final GradeSubjectRepository gradeSubjectRepository;
 
     private final SubjectRepository subjectRepository;
@@ -29,19 +29,19 @@ public class StudentService {
 
     public StudentResponse getStudentSkill(Long id) {
         var student = getStudentById(id);
-        var skills = achivementRepository.findAllByStudent(student);
-        Map<String , Long> mapSKill = new HashMap<>();
+        var skills = StudentSkillRepository.findAllByStudent(student);
+        Map<String, Float> mapSKill = new HashMap<>();
         for(var a : skills) {
             mapSKill.put(a.getSkill().getName(), a.getScore());
         }
 
         var subjects = gradeSubjectRepository.findAllByStudent(student);
-        Map<String , Integer> mapSubjects = new HashMap<>();
+        Map<String, Float> mapSubjects = new HashMap<>();
         for(var a : subjects) {
             mapSubjects.put(a.getSubject().getName(), a.getGrade());
         }
-        return StudentResponse.builder().achivement(mapSKill)
-                .grade(mapSubjects).name(student.getName()).mssv(student.getMssv()).id(student.getId()).build();
+        return StudentResponse.builder().StudentSkill(mapSKill)
+                .grade(mapSubjects).name(student.getName()).mssv(student.getStudent_id()).id(student.getId()).build();
     }
 
     public List<GradeSubject> getStudentListSubject(Long id) {
@@ -62,7 +62,7 @@ public class StudentService {
 
     public SubjectResponse getListSubjectSkillById(Long id) {
         var temp = subjectSkillRepository.findAllBySubject_Id(id);
-        Map<String , Long> mapSkills = new HashMap<>();
+        Map<String , Float> mapSkills = new HashMap<>();
         for(var a : temp) {
             mapSkills.put(a.getSkill().getName(), a.getScore());
         }
@@ -74,7 +74,7 @@ public class StudentService {
 
     public SubjectResponse getListSubjectSkillByName(String name) {
         var temp = subjectSkillRepository.findAllBySubject_Name(name);
-        Map<String , Long> mapSkills = new HashMap<>();
+        Map<String , Float> mapSkills = new HashMap<>();
         for(var a : temp) {
             mapSkills.put(a.getSkill().getName(), a.getScore());
         }

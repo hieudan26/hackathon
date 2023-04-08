@@ -15,14 +15,14 @@ public class GradeSubject {
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "student_id", referencedColumnName = "id", nullable = false)
     private Student student;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "subject_id", referencedColumnName = "id", nullable = false)
     private Subject subject;
 
-    private int grade;
+    private Float score;
     private LocalDateTime gradeAt;
 
     // constructors, getters, and setters

@@ -18,9 +18,7 @@ public class Subject {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "description", nullable = false)
-    private String description;
-
+    private Float score;
 
     // You can also define relationships with other entities here using JPA annotations
 

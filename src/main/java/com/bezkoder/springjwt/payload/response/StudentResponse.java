@@ -11,6 +11,6 @@ public class StudentResponse {
     Long id;
     String name;
     String mssv;
-    Map<String, Long> achivement;
-    Map<String, Integer> grade;
+    Map<String, Float> StudentSkill;
+    Map<String, Float> grade;
 }
