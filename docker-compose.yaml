@@ -1,0 +1,8 @@
+version: "3.3"
+services:
+  my_spring:
+    build:
+      context: .
+    restart: always
+    ports:
+      - '8080:8080'
