@@ -32,17 +32,33 @@ public class StudentService {
         var student = getStudentById(id);
         var skills = StudentSkillRepository.findAllByStudent(student);
         Map<String, Float> mapSKill = new HashMap<>();
+        Float skill_score = 0.0f;
         for(var a : skills) {
             mapSKill.put(a.getSkill().getName(), a.getScore());
+            skill_score+= a.getScore();
         }
+        Float grade_score = 0.0f;
 
         var subjects = gradeSubjectRepository.findAllByStudent(student);
         Map<String, Float> mapSubjects = new HashMap<>();
         for(var a : subjects) {
             mapSubjects.put(a.getSubject().getName(), a.getScore());
+            grade_score+=a.getScore();
         }
+        skill_score/=mapSKill.size();
+        grade_score/=mapSubjects.size();
+
         return StudentResponse.builder().StudentSkill(mapSKill)
-                .grade(mapSubjects).name(student.getName()).mssv(student.getStudent_id()).id(student.getId()).build();
+                .grade(mapSubjects)
+                .name(student.getName())
+                .mssv(student.getStudent_id())
+                .social_work_score(student.getSocial_work_score())
+                .training_point(student.getTraining_point())
+                .skill_score(skill_score)
+                .grade_point(grade_score)
+                .achivement((skill_score+grade_score)/2)
+                .id(student.getId())
+                .build();
     }
 
     public List<GradeSubject> getStudentListSubject(Long id) {
@@ -76,19 +92,8 @@ public class StudentService {
         var temp = studentRepository.findAll();
         List<StudentResponse> list = new ArrayList<>();
         for (var student : temp) {
-            var skills = StudentSkillRepository.findAllByStudent(student);
-            Map<String, Float> mapSKill = new HashMap<>();
-            for(var a : skills) {
-                mapSKill.put(a.getSkill().getName(), a.getScore());
-            }
 
-            var subjects = gradeSubjectRepository.findAllByStudent(student);
-            Map<String, Float> mapSubjects = new HashMap<>();
-            for(var a : subjects) {
-                mapSubjects.put(a.getSubject().getName(), a.getScore());
-            }
-            list.add(StudentResponse.builder().StudentSkill(mapSKill)
-                    .grade(mapSubjects).name(student.getName()).mssv(student.getStudent_id()).id(student.getId()).build());
+            list.add(getStudentSkill(student.getId()));
         }
         return list;
     }
