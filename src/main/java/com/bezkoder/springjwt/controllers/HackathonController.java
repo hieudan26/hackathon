@@ -25,9 +25,21 @@ public class HackathonController {
         return ResponseEntity.ok(subjects);
     }
 
-    @GetMapping("/subjects/{name}")
-    public ResponseEntity<SubjectResponse> getSubjectSkillsByName(@PathVariable String name) {
-        var skills = studentService.getListSubjectSkillByName(name);
-        return ResponseEntity.ok(skills);
+    @GetMapping("")
+    public ResponseEntity<List<StudentResponse>> getStudent() {
+        var students = studentService.getStudents();
+        return ResponseEntity.ok(students);
+    }
+
+    @GetMapping("/subjects")
+    public ResponseEntity<List<SubjectResponse>> getSubjectSkillsByName() {
+        var subject = studentService.getSubject();
+        return ResponseEntity.ok(subject);
+    }
+
+    @GetMapping("/subjects/{id}")
+    public ResponseEntity<SubjectResponse> getSubjectSkillsById(@PathVariable Long id) {
+        var subject = studentService.getListSubjectSkillById(id);
+        return ResponseEntity.ok(subject);
     }
 }

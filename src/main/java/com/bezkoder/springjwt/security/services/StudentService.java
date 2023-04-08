@@ -7,6 +7,7 @@ import com.bezkoder.springjwt.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +39,7 @@ public class StudentService {
         var subjects = gradeSubjectRepository.findAllByStudent(student);
         Map<String, Float> mapSubjects = new HashMap<>();
         for(var a : subjects) {
-            mapSubjects.put(a.getSubject().getName(), a.getGrade());
+            mapSubjects.put(a.getSubject().getName(), a.getScore());
         }
         return StudentResponse.builder().StudentSkill(mapSKill)
                 .grade(mapSubjects).name(student.getName()).mssv(student.getStudent_id()).id(student.getId()).build();
@@ -55,9 +56,41 @@ public class StudentService {
         return subject.orElse(null);
     }
 
-    public List<Subject> getSubject() {
-        var temp = subjectRepository.findAll();
-        return temp;
+    public List<SubjectResponse> getSubject() {
+        var list = subjectRepository.findAll();
+        List<SubjectResponse> subjectResponses = new ArrayList<>();
+        for(var subject: list) {
+            var temp = subjectSkillRepository.findAllBySubject_Id(subject.getId());
+            Map<String , Float> mapSkills = new HashMap<>();
+            for(var a : temp) {
+                mapSkills.put(a.getSkill().getName(), a.getScore());
+            }
+            subjectResponses.add(SubjectResponse.builder()
+                    .skills(mapSkills)
+                    .name(temp.get(0).getSubject().getName()).id(subject.getId()).build());
+        }
+        return subjectResponses;
+    }
+
+    public List<StudentResponse> getStudents() {
+        var temp = studentRepository.findAll();
+        List<StudentResponse> list = new ArrayList<>();
+        for (var student : temp) {
+            var skills = StudentSkillRepository.findAllByStudent(student);
+            Map<String, Float> mapSKill = new HashMap<>();
+            for(var a : skills) {
+                mapSKill.put(a.getSkill().getName(), a.getScore());
+            }
+
+            var subjects = gradeSubjectRepository.findAllByStudent(student);
+            Map<String, Float> mapSubjects = new HashMap<>();
+            for(var a : subjects) {
+                mapSubjects.put(a.getSubject().getName(), a.getScore());
+            }
+            list.add(StudentResponse.builder().StudentSkill(mapSKill)
+                    .grade(mapSubjects).name(student.getName()).mssv(student.getStudent_id()).id(student.getId()).build());
+        }
+        return list;
     }
 
     public SubjectResponse getListSubjectSkillById(Long id) {
